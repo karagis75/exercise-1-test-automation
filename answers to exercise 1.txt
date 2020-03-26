@@ -200,7 +200,7 @@ public class removeunnecessaryspaces {
 }
 
 6a  1
-b -not clear
+b infinite loop
 
 7  
 import xml.etree.cElementTree as et
