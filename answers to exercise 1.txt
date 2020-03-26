@@ -200,7 +200,10 @@ public class removeunnecessaryspaces {
 }
 
 6a  1
-b infinite loop
+b if  I enter "Kar"  -output  is as follows:
+K
+a
+r
 
 7  
 import xml.etree.cElementTree as et
