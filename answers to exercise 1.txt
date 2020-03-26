@@ -186,7 +186,95 @@ public class removeunnecessaryspaces {
 6a  1
 b -not clear
 
-7 - 8 not attempted
+7  
+import xml.etree.cElementTree as et
+import pandas as pd
+ 
+def getvalueofnode(node):
+    """ return node text or None """
+    return node.text if node is not None else None
+ 
+ 
+def xmlmain():
+    """ main """
+    parsed_xml = et.parse("test.xml")
+    dfcols = ['name', 'email', 'phone', 'street']
+    df_xml = pd.DataFrame(columns=dfcols)
+ 
+    for node in parsed_xml.getroot():
+        name = node.attrib.get('name')
+        email = node.find('email')
+        phone = node.find('phone')
+        street = node.find('address/street')
+ 
+        df_xml = df_xml.append(
+            pd.Series([name, getvalueofnode(email), getvalueofnode(phone),
+                       getvalueofnode(street)], index=dfcols),
+            ignore_index=True)
+ 
+   # print (df_xml)
+ 
+
+
+
+
+def isdmain():
+    """ isd main """
+    parsed_xml = et.parse("testisd.xml")
+    dfcols = ['name', 'email', 'phone', 'street']
+    df_xml_isd = pd.DataFrame(columns=dfcols)
+ 
+    for node in parsed_xml.getroot():
+        name2 = node.attrib.get('name')
+        email2 = node.find('email')
+        phone2 = node.find('phone')
+        street2 = node.find('address/street')
+ 
+        df_xml_isd =  df_xml_isd.append(
+            pd.Series([name2, getvalueofnode(email2), getvalueofnode(phone2),
+                       getvalueofnode(street2)], index=dfcols),
+            ignore_index=True)
+ 
+  
+    xmlmain() -call xml main to create xml dataframe
+    isdmain() -call isd main to create xml dataframe
+
+df_xml['name2'] = df_xml_isd['name2'] #add the name column from ISD dataframe to XML dataframe
+
+df_xml['namesMatch?'] = np.where(df_xml['name'] == df_xml_isd['name2'], 'True', 'False')  #create new column in df_xml to check if column match
+
+df_xml['email2'] = df_xml_isd['email2'] #add the name column from ISD dataframe to XML dataframe
+
+df_xml['emailMatch?'] = np.where(df_xml['email'] == df_xml_isd['email2'], 'True', 'False')  #create new column in df_xml to check if column match
+df_xml['phone2'] = df_xml_isd['phone2'] #add the name column from ISD dataframe to XML dataframe
+
+df_xml['phoneMatch?'] = np.where(df_xml['phone'] == df_xml_isd['phone2'], 'True', 'False')  #create new column in df_xml to check if column match
+
+df_xml['street2'] = df_xml_isd['street2'] #add the name column from ISD dataframe to XML dataframe
+
+df_xml['streetMatch?'] = np.where(df_xml['Street'] == df_xml_isd['street2'], 'True', 'False')  #create new column in df_xml to check if column match
+
+print (df_xml)
+
+8
+d = [{"1": [{"a":"test","b":"yes"}]},{"2":[{"c":"testing","d":"yes"}]},{"3":[{"e":"testing","f":"yes"}]}]
+def findkeys(node, kv):
+    if isinstance(node, list):
+        for i in node:
+            for x in findkeys(i, kv):
+                yield x
+    elif isinstance(node, dict):
+        if kv in node:
+            yield node[kv]
+        for j in node.values():
+            for x in findkeys(j, kv):
+                yield x
+
+print(list(findkeys(d, 'a')))
+print(list(findkeys(d, 'b')))
+print(list(findkeys(d, 'c')))
+print(list(findkeys(d, 'd')))
+print(list(findkeys(d, 'f')))
 
 9
 select Emp Id, Quantity, date,rank() OVER PARTITION BY QUANTITY order by quantity) rnk from sales inner join employee where sales.emp_id=employee.emp_id and country in (select country from country where continent='ASIA') AND Quantity>1000
