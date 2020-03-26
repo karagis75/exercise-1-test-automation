@@ -296,5 +296,5 @@ print(list(findkeys(d, 'd')))
 print(list(findkeys(d, 'f')))
 
 9
-select Emp Id, Quantity, date,rank() OVER PARTITION BY QUANTITY order by quantity) rnk from sales inner join employee where sales.emp_id=employee.emp_id and country in (select country from country where continent='ASIA') AND Quantity>1000
+select Emp Id, Quantity, date,rank() OVER (PARTITION BY QUANTITY order by quantity) rnk from sales inner join employee where sales.emp_id=employee.emp_id and country in (select country from country where continent='ASIA') AND Quantity>1000
 
